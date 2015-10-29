@@ -15,13 +15,25 @@ var myLife = require("../models/mylife.js");
  */
 router.get('/', function(req, res) {
 
-	var jsonData = {
-		'home': 'hello world',
+	myLife.find(function(err,data){
 
-	}
+			if(err){
+				var error = {
+					status: "ERROR",
+					message: err
+				}
+				return res.json(err)
+			}
 
-	// respond with json data
-	res.json(jsonData)
+			var jsonData = {
+				status: "OK",
+				life: data
+			}
+
+			return res.json(jsonData);
+
+	})
+
 });
 
 router.get('/add-life', function(req,res){
