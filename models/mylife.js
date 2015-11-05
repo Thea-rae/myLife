@@ -7,7 +7,10 @@ var mylifeSchema = new Schema({
 	day: String,
 	time: String,
 	activity: String,
-	location: String,
+	location: {
+		geo: { type: [Number], index: { type: '2dsphere', sparse: true } },
+		name: String
+	},
 	artist: String,
 	track: String,
 	dateAdded : { type: Date, default: Date.now }
