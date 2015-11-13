@@ -1,6 +1,6 @@
 // CUSTOM JS FILE //
 
-	var days;
+	var life;
 	var myActivity;
 	var myLocation;
 	var schedule;
@@ -18,7 +18,6 @@ $(document).ready(function(){
 	initVars();
 	getLife();
 
-	console.log("ummmmmmm");
 
 	function getLife(){
 		console.log("yo bitches!");
@@ -27,66 +26,35 @@ $(document).ready(function(){
 			dataType: 'json', success :function(response){
 				console.log(response);
 				life = response.life;
-				for(var i=0; i<life.length; i++){
-					console.log(life[i]);
-				}
 			}
 		})
 	}
 
-
-	$("#selectors").change(function(){
-		var timeVal = $('#timeSelector').val();
-		var dayVal = $('#daySelector').val();
-		//myDay(dayVal, timeVal);
-		initMap(mylat, mylng);
-		getLifeByHour(timeVal, dayVal);
-		console.log(myActivity +", "+mylat+", "+mylng);
-	});
+		$("#selectors").change(function(){
+			console.log("im changing")
+			var timeVal = $('#timeSelector').val();
+			var dayVal = $('#daySelector').val();
+			getLifeByHour(timeVal, dayVal);
+		});
 });
 
-	function getLifeByHour(timeVal, dayVal){
-		console.log("using selectors yo!");
-		jQuery.ajax({
-			url: '/api/time',
-			//data: {time: timeVal, day: dayVal},
-			dataType: 'json', success :function(response){
-				life = response.life;
-				for(var i=0; i<life.length; i++){
-					console.log(life[i]);
-				}
+function getLifeByHour(timeVal, dayVal){
+	console.log("by hour is being called...");
+	for(var i =0; i<life.length; i++){
+		if(dayVal == life[i].day){
+			if(timeVal == life[i].time){
+				myActivity = life[i].activity;
+				track = life[i].track;
+				artist = life[i].artist;
+				mylng = life[i].location.geo[1];
+				mylat = life[i].location.geo[0];
 			}
-		})
+		}
 	}
-
-// $.getJSON("days.json", parselife);
-
-// function parselife(data){
-// 	days = data.days;
-// }
-// function myDay(day, time){
-// 	console.log(day,time);
-// 	for(i=0; i<days.length; i++){
-// 		if (days[i].day == day){
-// 			var schedule =days[i].schedule;
-// 			for(j=0; j<schedule.length; j++){
-// 				if( schedule[j].time == time){
-// 					myActivity = schedule[j].activity;
-// 					setActivityImage(myActivity);
-// 					myheadphones = schedule[j].music;
-// 					artist =myheadphones.artist;
-// 					track=myheadphones.track;
-// 					setHistory(artist, track);
-// 					myLocation = schedule[j].location;
-// 					for(var k=0; k < myLocation.length; k++){
-// 						mylat = myLocation[k].lat;
-// 						mylng = myLocation[k].lng;
-// 					}
-// 				}
-// 			}
-// 		}
-// 	}
-// }
+	setHistory(artist, track);
+	setActivityImage(myActivity);
+	initMap(mylat, mylng);
+}
 
 function setHistory(artist, track){
 	if ((artist == "none"|| artist ==null) && (track =="none" || track == null)){
@@ -137,7 +105,6 @@ function initInsta(){
 		}
 	});
 }
-
 
 function initMap(mlat, mlng) {
 	// Specify features and elements to define styles.
