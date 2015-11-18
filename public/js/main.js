@@ -20,7 +20,6 @@ $(document).ready(function(){
 
 
 	function getLife(){
-		console.log("yo bitches!");
 		jQuery.ajax({
 			url: '/api/get',
 			dataType: 'json', success :function(response){
@@ -31,7 +30,6 @@ $(document).ready(function(){
 	}
 
 		$("#selectors").change(function(){
-			console.log("im changing")
 			var timeVal = $('#timeSelector').val();
 			var dayVal = $('#daySelector').val();
 			getLifeByHour(timeVal, dayVal);
@@ -39,21 +37,23 @@ $(document).ready(function(){
 });
 
 function getLifeByHour(timeVal, dayVal){
-	console.log("by hour is being called...");
 	for(var i =0; i<life.length; i++){
-		if(dayVal == life[i].day){
+		if(dayVal.toLowerCase() == life[i].day.toLowerCase()){
 			if(timeVal == life[i].time){
-				myActivity = life[i].activity;
-				track = life[i].track;
-				artist = life[i].artist;
-				mylng = life[i].location.geo[1];
-				mylat = life[i].location.geo[0];
+				console.log(life[i].activity);
+				myActivity = life[i].activity.toLowerCase();
+				track = life[i].track.toLowerCase();
+				artist = life[i].artist.toLowerCase();
+				mylat = life[i].location.geo[1];
+				mylng = life[i].location.geo[0];
+				initMap(mylat, mylng);
+				setHistory(artist, track);
+				setActivityImage(myActivity);
+				return;
 			}
 		}
 	}
-	setHistory(artist, track);
-	setActivityImage(myActivity);
-	initMap(mylat, mylng);
+
 }
 
 function setHistory(artist, track){
@@ -69,8 +69,6 @@ function setHistory(artist, track){
 }
 
 function setActivityImage(activity){
-	console.log('set the activity image for ' + activity);
-
 	for(var i=0;i<instaData.length;i++){
 		var matchStatus = $.inArray(activity, instaData[i].tags);
 		if(matchStatus!=-1){
