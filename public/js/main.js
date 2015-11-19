@@ -29,9 +29,39 @@ $(document).ready(function(){
 		})
 	}
 
-		$("#selectors").change(function(){
-			var timeVal = $('#timeSelector').val();
+	$(function(){
+		var select = $('#timeSelector');
+		var slider = $("<div id ='timeslider'></div>").insertAfter(select).slider({
+			min: 1,
+			max: 24,
+			range:"true",
+			value: select[0].selectedIndex+1,
+			slide: function(event, ui){
+				select[0].selectedIndex = ui.value-1;
+				
+				
+			}
+		});
+	});
+
+		$(function(){
+		var select = $('#daySelector');
+		var slider = $("<div id ='dayslider'></div>").insertAfter(select).slider({
+			min: 1,
+			max: 7,
+			range:"true",
+			value: select[0].selectedIndex+1,
+			slide: function(event, ui){
+				select[0].selectedIndex = ui.value-1;
+				
+			}
+		});
+	});
+
+		$("#selectors").on("slidestop",function(event, ui){
 			var dayVal = $('#daySelector').val();
+			var timeVal = $('#timeSelector').val();
+			console.log(dayVal,timeVal);
 			getLifeByHour(timeVal, dayVal);
 		});
 });
@@ -50,6 +80,15 @@ function getLifeByHour(timeVal, dayVal){
 				setHistory(artist, track);
 				setActivityImage(myActivity);
 				return;
+			}else{
+				track = "none";
+				artist = "none";
+				myActivity = "sleeping";
+				mylat = 40.703791;
+				mylng = -73.93788;
+				initMap(mylat, mylng);
+				setHistory(artist, track);
+				setActivityImage(myActivity);
 			}
 		}
 	}
