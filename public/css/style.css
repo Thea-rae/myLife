@@ -8,52 +8,23 @@ body {
 }
 .selectors {
 	border-radius: 10px;
-	height: 40px;
-	width: auto;
+	height: 60px;
+	width:25%;
+	padding: 10px;
 }
-.day-selector {
-	border-radius: 10px;
-	height: 40px;
-	width:200px;
-	background: mediumturquoise;
-	padding-top: 10px;
-}
+
 .day-selector select{
-	overflow-y:auto;
-	display: inline !important;
-	position: relative;
-	font-size: 20px;
-	padding-left: 15px;
-	margin-left: 10px;
-	font-family: "verdana";
-	color:paleturquoise;
-	background: mediumturquoise;
-	border-style: none;
+	display: none;
 }
-.day-selector select option{
-	display: inline !important;
-	font-family: "verdana";
-	color:paleturquoise;
+
+#dayslider{
+	margin: 15px;
 }
-.day-selector select:hover {
-	color: darkturquoise;
-}
-.time-selector{
-	height: 40px;
-	float: right;
-	width: 100px;
-}
+
 .time-selector select{
-	float: right;
-	font-size: 20px;
-	margin-right: 5px;
-	color:paleturquoise;
-	background: mediumturquoise;
-	border-style: none;
+	display: none;
 }
-.time-selector select:hover{
-	color:darkturquoise;
-}
+
 .container{
 	margin-top: 10px;
 }
@@ -61,13 +32,13 @@ body {
 	z-index: 80;
 	position:absolute;
 	margin-top: 50px;
-	margin-left: 50%;
+	margin-left: 40%;
 	height: 75px;
-	width: 350px;
+	width: auto;
 	border-radius: 10px;
 	background: turquoise;
 	border-style: solid;
-	border-width: 7px;
+	border-width: 3px;
 	border-color: darkturquoise;
 }
 .text img{
@@ -100,14 +71,14 @@ body {
 }
 .media{
 	z-index: 100;
-	border-radius: 10px;
+	border-radius: 3px;
 	position:absolute;
 	margin-top: 400px;
-	margin-left: 15%;
+	margin-left: 10%;
 	height: 200px;
 	width: 200px;
 	background: turquoise;
 	border-style: solid;
-	border-width: 7px;
+	border-width: 3px;
 	border-color: darkturquoise;
 }

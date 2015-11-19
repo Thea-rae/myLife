@@ -3,7 +3,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<link href="css/style.css" rel="stylesheet">
-		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+		<link href="css/jquery-ui.css" rel="stylesheet">
 		<script src="js/jquery.js"></script>
 		<script src="js/main.js" type="text/javascript"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
@@ -11,7 +11,7 @@
 		<script type="text/javascript" src="https://jquery-blog-js.googlecode.com/files/SetCase.js"></script>
 	</head>
 	<body>
-		<div id="selectors" class="selectors" method="get" action="/api/time">
+		<div id="selectors" class="selectors">
 			<div class="day-selector">
 				<select id="daySelector">
 					<option value="monday">M</option>
@@ -22,7 +22,8 @@
 					<option value="saturday">SA</option>
 					<option value="sunday">SU</option>
 				</select>
-				<div class="time-selector">
+			</div>
+			<div class="time-selector">
 					<select id="timeSelector">
 						<option value="00:00">00:00</option>
 						<option value="01:00">01:00</option>
@@ -50,7 +51,6 @@
 						<option value="23:00">23:00</option>
 					</select>
 				</div>
-			</div>
 		</div>
 		<div class="container">
 			<div class="text" id="music">
