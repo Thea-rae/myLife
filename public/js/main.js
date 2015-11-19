@@ -11,12 +11,18 @@
 	var myheadphones;
 	var artist;
 	var track;
+	var currentDay;
+	var dayPosted;
 
 $(document).ready(function(){
+	var date = new Date().toJSON();
+	var currentDate = date.substr(8,2);
+	currentDay = currentDate.valueOf();
 
 	initInsta();
 	initVars();
 	getLife();
+
 
 
 	function getLife(){
@@ -25,35 +31,33 @@ $(document).ready(function(){
 			dataType: 'json', success :function(response){
 				console.log(response);
 				life = response.life;
+				fillArrays();
 			}
 		})
 	}
 
 	$(function(){
 		var select = $('#timeSelector');
-		var slider = $("<div id ='timeslider'></div>").insertAfter(select).slider({
+		var slider = $("<div id ='timeslider' placeholder='Time'></div>").insertAfter(select).slider({
 			min: 1,
 			max: 24,
 			range:"true",
 			value: select[0].selectedIndex+1,
 			slide: function(event, ui){
 				select[0].selectedIndex = ui.value-1;
-				
-				
 			}
 		});
 	});
 
 		$(function(){
 		var select = $('#daySelector');
-		var slider = $("<div id ='dayslider'></div>").insertAfter(select).slider({
+		var slider = $("<div id ='dayslider' placeholder ='Day'></div>").insertAfter(select).slider({
 			min: 1,
 			max: 7,
 			range:"true",
 			value: select[0].selectedIndex+1,
 			slide: function(event, ui){
 				select[0].selectedIndex = ui.value-1;
-				
 			}
 		});
 	});
@@ -61,7 +65,6 @@ $(document).ready(function(){
 		$("#selectors").on("slidestop",function(event, ui){
 			var dayVal = $('#daySelector').val();
 			var timeVal = $('#timeSelector').val();
-			console.log(dayVal,timeVal);
 			getLifeByHour(timeVal, dayVal);
 		});
 });
@@ -70,8 +73,8 @@ function getLifeByHour(timeVal, dayVal){
 	for(var i =0; i<life.length; i++){
 		if(dayVal.toLowerCase() == life[i].day.toLowerCase()){
 			if(timeVal == life[i].time){
-				console.log(life[i].activity);
 				myActivity = life[i].activity.toLowerCase();
+				console.log(myActivity);
 				track = life[i].track.toLowerCase();
 				artist = life[i].artist.toLowerCase();
 				mylat = life[i].location.geo[1];
@@ -79,7 +82,7 @@ function getLifeByHour(timeVal, dayVal){
 				initMap(mylat, mylng);
 				setHistory(artist, track);
 				setActivityImage(myActivity);
-				return;
+//				currently(myActivity, dayVal, timeVal);
 			}else{
 				track = "none";
 				artist = "none";
@@ -89,11 +92,60 @@ function getLifeByHour(timeVal, dayVal){
 				initMap(mylat, mylng);
 				setHistory(artist, track);
 				setActivityImage(myActivity);
+//				currently(myActivity, dayVal, timeVal);
 			}
 		}
 	}
-
 }
+
+function currently(activity, day, time){
+	var p0 = "On "+ day;
+	var p1 = "At "+ time;
+	var p2 = "I was "+ activity;
+	$('#myLife').text(p0);
+	$('#myLife').text(p1);
+	$('#myLife').text(p2);
+}
+
+function fillArrays(){
+	var datePosted=[];
+	var activity = [];
+	for(var i =0; i<life.length; i++){
+		datePosted.push(life[i].dateAdded.substr(8,2).valueOf());
+		if(life[i].dateAdded.substr(8,2).valueOf()>currentDay-7){
+			activity.push(life[i].activity.toLowerCase());
+		}
+	}
+	addSummary(mode(activity));
+}
+
+function mode(array){
+		if(array.length == 0)
+			return null;
+		var modeMap = {};
+		var maxEl = array[0], maxCount = 1;
+		for(var i = 0; i < array.length; i++)
+		{
+			var el = array[i];
+			if(modeMap[el] == null)
+				modeMap[el] = 1;
+			else
+				modeMap[el]++;	
+			if(modeMap[el] > maxCount)
+			{
+				maxEl = el;
+				maxCount = modeMap[el];
+			}
+		}
+		console.log(maxEl);
+		return maxEl;
+}
+
+function addSummary(mode){
+	var p = "<li>In the last 7 days was most offen " + mode  + "</li>";
+	$('#myLife').append(p);
+}
+
 
 function setHistory(artist, track){
 	if ((artist == "none"|| artist ==null) && (track =="none" || track == null)){
