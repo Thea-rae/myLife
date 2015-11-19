@@ -23,8 +23,6 @@ $(document).ready(function(){
 	initVars();
 	getLife();
 
-
-
 	function getLife(){
 		jQuery.ajax({
 			url: '/api/get',
@@ -62,34 +60,32 @@ $(document).ready(function(){
 		});
 	});
 
-		$("#selectors").on("slidestop",function(event, ui){
-			var dayVal = $('#daySelector').val();
-			var timeVal = $('#timeSelector').val();
-			getLifeByHour(timeVal, dayVal);
-		});
+	$("#selectors").on("slidestop",function(event, ui){
+		var dayVal = $('#daySelector').val();
+		var timeVal = $('#timeSelector').val();
+		getLifeByHour(timeVal, dayVal);
+	});
 });
 
 function getLifeByHour(timeVal, dayVal){
-	for(var i =0; i<life.length; i++){
+	for(var i=0; i<life.length; i++){
 		if(dayVal.toLowerCase() == life[i].day.toLowerCase()){
 			if(timeVal == life[i].time){
 				myActivity = life[i].activity.toLowerCase();
-				console.log(myActivity);
 				track = life[i].track.toLowerCase();
 				artist = life[i].artist.toLowerCase();
 				mylat = life[i].location.geo[1];
 				mylng = life[i].location.geo[0];
-				callAllTheThings(myActivity, dayVal, timeVal, artist, track, mylat, mylng);
 			}else{
 				track = "none";
 				artist = "none";
 				myActivity = "sleeping";
 				mylat = 40.703791;
 				mylng = -73.93788;
-				callAllTheThings(myActivity, dayVal, timeVal, artist, track, mylat, mylng);
 			}
 		}
 	}
+	callAllTheThings(myActivity, dayVal, timeVal, artist, track, mylat, mylng);
 }
 
 function callAllTheThings(act, day, time, artist, track, lat, lng){
@@ -111,10 +107,10 @@ function currently(activity, day, time){
 function fillArrays(){
 	var datePosted=[];
 	var activity = [];
-	for(var i =0; i<life.length; i++){
-		datePosted.push(life[i].dateAdded.substr(8,2).valueOf());
-		if(life[i].dateAdded.substr(8,2).valueOf()>currentDay-7){
-			activity.push(life[i].activity.toLowerCase());
+	for(var j =0; j<life.length; j++){
+		datePosted.push(life[j].dateAdded.substr(8,2).valueOf());
+		if(life[j].dateAdded.substr(8,2).valueOf()>currentDay-7){
+			activity.push(life[j].activity.toLowerCase());
 		}
 	}
 	addSummary(mode(activity));
@@ -131,14 +127,13 @@ function mode(array){
 			if(modeMap[el] == null)
 				modeMap[el] = 1;
 			else
-				modeMap[el]++;	
+				modeMap[el]++;
 			if(modeMap[el] > maxCount)
 			{
 				maxEl = el;
 				maxCount = modeMap[el];
 			}
 		}
-		console.log(maxEl);
 		return maxEl;
 }
 
@@ -183,7 +178,7 @@ function initVars(){
 }
 
 function initInsta(){
-	var id = "d76eab0645a34b1598e211af5370dd4d";
+	var id = "450f31eed43b4ee8a7fcf1a4bb27a6eb";
 	var userID = 1701856516; //my userID 
 
 	$.ajax({
