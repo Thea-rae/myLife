@@ -79,23 +79,24 @@ function getLifeByHour(timeVal, dayVal){
 				artist = life[i].artist.toLowerCase();
 				mylat = life[i].location.geo[1];
 				mylng = life[i].location.geo[0];
-				initMap(mylat, mylng);
-				setHistory(artist, track);
-				setActivityImage(myActivity);
-//				currently(myActivity, dayVal, timeVal);
+				callAllTheThings(myActivity, dayVal, timeVal, artist, track, mylat, mylng);
 			}else{
 				track = "none";
 				artist = "none";
 				myActivity = "sleeping";
 				mylat = 40.703791;
 				mylng = -73.93788;
-				initMap(mylat, mylng);
-				setHistory(artist, track);
-				setActivityImage(myActivity);
-//				currently(myActivity, dayVal, timeVal);
+				callAllTheThings(myActivity, dayVal, timeVal, artist, track, mylat, mylng);
 			}
 		}
 	}
+}
+
+function callAllTheThings(act, day, time, artist, track, lat, lng){
+				initMap(lat,lng);
+				setHistory(artist, track);
+				setActivityImage(act);
+				currently(act, day, time);
 }
 
 function currently(activity, day, time){
@@ -163,6 +164,7 @@ function setActivityImage(activity){
 	for(var i=0;i<instaData.length;i++){
 		var matchStatus = $.inArray(activity, instaData[i].tags);
 		if(matchStatus!=-1){
+			console.log(imgAct);
 			imgAct = instaData[i].images.standard_resolution.url;
 			$("#activityImg").attr("src", imgAct);
 			return;
