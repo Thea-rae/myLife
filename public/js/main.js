@@ -12,12 +12,10 @@
 	var artist;
 	var track;
 	var currentDay;
-	var dayPosted;
 
 $(document).ready(function(){
 	var date = new Date().toJSON();
-	var currentDate = date.substr(8,2);
-	currentDay = currentDate.valueOf();
+	currentDay = date.substr(8,2).valueOf();
 
 	initInsta();
 	initVars();
@@ -70,50 +68,54 @@ $(document).ready(function(){
 function getLifeByHour(timeVal, dayVal){
 	for(var i=0; i<life.length; i++){
 		if(dayVal.toLowerCase() == life[i].day.toLowerCase()){
+			console.log("day"+dayVal);
 			if(timeVal == life[i].time){
+				console.log("time "+timeVal);
 				myActivity = life[i].activity.toLowerCase();
 				track = life[i].track.toLowerCase();
 				artist = life[i].artist.toLowerCase();
 				mylat = life[i].location.geo[1];
 				mylng = life[i].location.geo[0];
+				callAllTheThings(myActivity, dayVal, timeVal, artist, track, mylat, mylng);
+				return;
 			}else{
-				track = "none";
-				artist = "none";
+				artist ="none";
+				track ="none";
 				myActivity = "sleeping";
 				mylat = 40.703791;
 				mylng = -73.93788;
 			}
 		}
 	}
-	callAllTheThings(myActivity, dayVal, timeVal, artist, track, mylat, mylng);
 }
 
-function callAllTheThings(act, day, time, artist, track, lat, lng){
-				initMap(lat,lng);
-				setHistory(artist, track);
-				setActivityImage(act);
-				currently(act, day, time);
+function callAllTheThings(activity, d, t, artist, track, lat, lng){
+	initMap(lat,lng);
+	setHistory(artist, track);
+	setActivityImage(activity);
+	currently(activity, d, t);
 }
 
-function currently(activity, day, time){
-	var p0 = "On "+ day;
-	var p1 = "At "+ time;
+function currently(activity, d, t){
+	console.log(activity);
+	var p0 = "On "+ d;
+	var p1 = "At "+ t;
 	var p2 = "I was "+ activity;
-	$('#myLife').text(p0);
-	$('#myLife').text(p1);
-	$('#myLife').text(p2);
+	$('#day').text(p0);
+	$('#time').text(p1);
+	$('#activity').text(p2);
 }
 
 function fillArrays(){
 	var datePosted=[];
-	var activity = [];
+	var a = [];
 	for(var j =0; j<life.length; j++){
 		datePosted.push(life[j].dateAdded.substr(8,2).valueOf());
 		if(life[j].dateAdded.substr(8,2).valueOf()>currentDay-7){
-			activity.push(life[j].activity.toLowerCase());
+			a.push(life[j].activity.toLowerCase());
 		}
 	}
-	addSummary(mode(activity));
+	addSummary(mode(a));
 }
 
 function mode(array){
@@ -121,15 +123,14 @@ function mode(array){
 			return null;
 		var modeMap = {};
 		var maxEl = array[0], maxCount = 1;
-		for(var i = 0; i < array.length; i++)
-		{
+		for(var i = 0; i < array.length; i++){
 			var el = array[i];
-			if(modeMap[el] == null)
+			if(modeMap[el] == null){
 				modeMap[el] = 1;
-			else
+			}else{
 				modeMap[el]++;
-			if(modeMap[el] > maxCount)
-			{
+			}
+			if(modeMap[el] > maxCount){
 				maxEl = el;
 				maxCount = modeMap[el];
 			}
@@ -138,8 +139,8 @@ function mode(array){
 }
 
 function addSummary(mode){
-	var p = "<li>In the last 7 days was most offen " + mode  + "</li>";
-	$('#myLife').append(p);
+	var p = "In the last 7 days was most offen " + mode;
+	$('#summary').text(p);
 }
 
 
@@ -175,10 +176,14 @@ function initVars(){
 	mylat = 40.703791;
 	mylng = -73.93788;
 	$("#headphones").attr("src", "img/noheadphones.png");
+	var d = "day";
+	var t = "time"
+	var a = "doing something"
+	currently(a, d, t);
 }
 
 function initInsta(){
-	var id = "450f31eed43b4ee8a7fcf1a4bb27a6eb";
+	var id = "d76eab0645a34b1598e211af5370dd4d";
 	var userID = 1701856516; //my userID 
 
 	$.ajax({
