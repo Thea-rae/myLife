@@ -84,6 +84,7 @@ function getLifeByHour(timeVal, dayVal){
 				myActivity = "sleeping";
 				mylat = 40.703791;
 				mylng = -73.93788;
+				callAllTheThings(myActivity, dayVal, timeVal, artist, track, mylat, mylng);
 			}
 		}
 	}
